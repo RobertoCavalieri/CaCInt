@@ -55,6 +55,7 @@ class Producto:
 
 class Inventario:
     def __init__(self):
+        self.productos = []
         self.conexion = get_db_connection()
         self.cursor = self.conexion.cursor()
 
@@ -101,7 +102,7 @@ class Inventario:
                 f"Código: {producto.codigo}, Descripción: {producto.descripcion}, Cantidad: {producto.cantidad}, Precio: {producto.precio}")
 
 
-def __init__(self):
+    def __init__(self):
         self.conexion = get_db_connection()
         self.cursor = self.conexion.cursor()
         self.items = []
@@ -154,7 +155,7 @@ def __init__(self):
 
 
 app = Flask(__name__)
-carrito = Carrito()
+carrito = carrito()
 inventario = Inventario()
 
 
