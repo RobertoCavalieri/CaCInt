@@ -101,6 +101,7 @@ class Inventario:
             print(
                 f"Código: {producto.codigo}, Descripción: {producto.descripcion}, Cantidad: {producto.cantidad}, Precio: {producto.precio}")
 
+class Carrito:
 
     def __init__(self):
         self.conexion = get_db_connection()
@@ -155,7 +156,7 @@ class Inventario:
 
 
 app = Flask(__name__)
-carrito = carrito()
+carrito = Carrito()
 inventario = Inventario()
 
 
