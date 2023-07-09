@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Productos</title>
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="/estilos.css">
 </head>
 
 
@@ -37,7 +37,7 @@
 
 
     <div class="contenedor-centrado">
-        <a href="modificaciones.html">Menu principal</a>
+        <a href="index.html">Menu principal</a>
     </div>
 
 
@@ -51,7 +51,7 @@
             },
             methods: {
                 obtenerProductos() {
-                    const URL = "https://xxxxxx.pythonanywhere.com/"
+                    const URL = "https://robertocavalieri.pythonanywhere.com/"
 
 
                     fetch(URL + 'productos')
@@ -71,7 +71,7 @@
                         })
                 },
                 eliminarProducto(codigo) {
-                    const URL = "https://xxxxxx.pythonanywhere.com/"
+                    const URL = "https://robertocavalieri.pythonanywhere.com/"
 
 
                     fetch(URL + `productos/${codigo}`, { method: 'DELETE' })
