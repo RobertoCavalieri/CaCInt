@@ -1,8 +1,9 @@
 import sqlite3
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 
 DATABASE = "inventario.db"
+CONTRASEÑA = "1234"
 
 
 def get_db_connection():  # función para establecer conexión con la base de datos, hacer consultas y transacciones
@@ -236,6 +237,15 @@ def quitar_carrito():
 @app.route('/carrito', methods=['GET'])
 def obtener_carrito():
     return carrito.mostrar()
+
+
+@app.route('/altas', methods=['POST'])
+def verificar_contrasena():
+    contrasena = request.json.get('contrasena')
+    if contrasena == CONTRASEÑA:  # Verifica la contraseña ingresada con la contraseña generada en Python
+        return send_file('altas.html')
+    else:
+        return jsonify({'message': 'Contraseña incorrecta.'}), 401
 
 
 # Finalmente, si estamos ejecutando este archivo, lanzamos app.
