@@ -49,6 +49,7 @@
             <th>Descripción</th>
             <th>Cantidad</th>
             <th>Precio</th>
+            <th>Subtotal</th>
           </tr>
         </thead>
         <tbody>
@@ -57,11 +58,15 @@
             <td>{{ item.descripcion }}</td>
             <td align="right">{{ item.cantidad }}</td>
             <td align="right">&nbsp; &nbsp; {{ item.precio }}</td>
+            <td align="right">&nbsp; &nbsp; {{ subtotal(item) }}</td>
+          </tr>
+          <tr>
+            <td colspan="4" align="right"><b>Total:</b></td>
+            <td align="right"><b>{{ totalPrecio }}</b></td>
           </tr>
         </tbody>
       </table>
     </div>
-
 
     <div v-if="!mostrarCarrito" class="contenedor-centrado">
       <button @click="obtenerCarrito">Mostrar carrito</button>
@@ -87,6 +92,7 @@
           productos: [],
           mostrarCarrito: false,
           carrito: [],
+          totalPrecio: 0,
         }
       },
       created() {
@@ -144,17 +150,24 @@
               alert('Error al restar el producto del carrito.')
             })
         },
-        obtenerCarrito() {
+         obtenerCarrito() {
           fetch(URL + 'carrito')
             .then(response => response.json())
             .then(data => {
               this.carrito = data
               this.mostrarCarrito = true
+              this.calcularTotalPrecio(); // Llamamos a la función para calcular el total de precios
             })
             .catch(error => {
               console.error('Error al obtener el carrito:', error)
               alert('Error al obtener el carrito.')
             })
+        },
+        subtotal(item) {
+          return item.precio * item.cantidad;
+        },
+        calcularTotalPrecio() {
+          this.totalPrecio = this.carrito.reduce((total, item) => total + this.subtotal(item), 0);
         },
       },
     })
