@@ -70,8 +70,8 @@
             })
         },
         eliminarProducto(producto) {
-          const confirmacion = prompt('Para eliminar el producto, escriba "ELIMINAR":');
-          if (confirmacion === 'ELIMINAR') {
+          const confirmacion = prompt('Para eliminar el producto, escriba la clave correspondiente:');
+          if (confirmacion === '1234') {
             const URL = "https://robertocavalieri.pythonanywhere.com/"
 
             fetch(URL + `productos/${producto.codigo}`, { method: 'DELETE' })

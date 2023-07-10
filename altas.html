@@ -16,78 +16,73 @@
         <label for="codigo">Código:</label>
         <input type="text" id="codigo" name="codigo" required><br>
 
-
         <label for="descripcion">Descripción:</label>
         <input type="text" id="descripcion" name="descripcion" required><br>
-
 
         <label for="cantidad">Cantidad:</label>
         <input type="number" id="cantidad" name="cantidad" required><br>
 
-
         <label for="precio">Precio:</label>
         <input type="number" step="0.01" id="precio" name="precio" required><br>
 
-
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" required><br>
-
-
-        <button type="submit">Agregar Producto</button>
+        <button type="button" onclick="confirmarAgregar()">Agregar Producto</button>
         <a href="index.html">Menu principal</a>
     </form>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#formulario').submit(function(event) {
-                event.preventDefault();
-                var codigo = $('#codigo').val();
-                var descripcion = $('#descripcion').val();
-                var cantidad = $('#cantidad').val();
-                var precio = $('#precio').val();
-                var contrasena = $('#contrasena').val();  // Obtenemos el valor de la contraseña
+        const URL = "https://robertocavalieri.pythonanywhere.com/";
 
-                var producto = {
-                    codigo: codigo,
-                    descripcion: descripcion,
-                    cantidad: cantidad,
-                    precio: precio,
-                    contrasena: contrasena  // Agregamos la contraseña al objeto del producto
-                };
+        function confirmarAgregar() {
+            var confirmacion = prompt('Por favor, ingresa la clave correspondiente para confirmar:');
+            if (confirmacion === "1234") {
+                agregarProducto();
+            } else {
+                alert('La clave  de confirmación es incorrecta. Por favor, ingresa  la clave correspondiente para confirmar.');
+            }
+        }
 
-                $.ajax({
-                    url: '/altas',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ 'contrasena': contrasena }),
-                    success: function(response) {
-                        // Realizamos la solicitud POST al servidor solo si la contraseña es correcta
-                        $.ajax({
-                            url: '/productos',
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify(producto),
-                            success: function(response) {
-                                alert('Producto agregado correctamente.');
-                                $('#codigo').val('');
-                                $('#descripcion').val('');
-                                $('#cantidad').val('');
-                                $('#precio').val('');
-                                $('#contrasena').val('');  // Limpiamos el campo de la contraseña
-                            },
-                            error: function(xhr, status, error) {
-                                var errorMessage = JSON.parse(xhr.responseText).message;
-                                alert('Error: ' + errorMessage);
-                            }
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        var errorMessage = JSON.parse(xhr.responseText).message;
-                        alert('Error: ' + errorMessage);
+        function agregarProducto() {
+            // Obtenemos los valores del formulario
+            var codigo = document.getElementById('codigo').value;
+            var descripcion = document.getElementById('descripcion').value;
+            var cantidad = document.getElementById('cantidad').value;
+            var precio = document.getElementById('precio').value;
+
+            // Creamos un objeto con los datos del producto
+            var producto = {
+                codigo: codigo,
+                descripcion: descripcion,
+                cantidad: cantidad,
+                precio: precio
+            };
+            console.log(producto);
+
+            // Realizamos la solicitud POST al servidor
+            fetch(URL + 'productos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(producto)
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json(); // Parseamos la respuesta JSON
+                    } else {
+                        throw new Error('Error al agregar el producto.');
                     }
+                })
+                .then(function (data) {
+                    alert('Producto agregado correctamente.');
+                    document.getElementById('codigo').value = '';
+                    document.getElementById('descripcion').value = '';
+                    document.getElementById('cantidad').value = '';
+                    document.getElementById('precio').value = '';
+                })
+                .catch(function (error) {
+                    console.log('Error:', error);
+                    alert('Error al agregar el producto.');
                 });
-            });
-        });
+        }
     </script>
 </body>
 
