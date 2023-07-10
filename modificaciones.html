@@ -28,12 +28,12 @@
                 <input type="text" id="descripcionModificar" v-model="descripcion" required><br>
 
                 <label for="cantidadModificar">Cantidad:</label>
-                <input type="number" id="cantidadModificar" v-model="cantidad" required><br>
+                <input type="number" id="cantidadModificar" v-model="cantidad" min="0" step="1" pattern="[0-9]+" required><br>
 
                 <label for="precioModificar">Precio:</label>
-                <input type="number" step="0.01" id="precioModificar" v-model="precio" required><br>
+                <input type="number" step="0.01" id="precioModificar" v-model="precio" min="0" required><br>
 
-                <button type="submit">Guardar Cambios</button>
+                <button type="submit" onclick="confirmarAgregar()">Guardar Cambios</button>
                 <a href="modificaciones.html">Cancelar</a>
             </form>
         </div>
@@ -43,7 +43,14 @@
     <script>
         //const URL = "http://127.0.0.1:5000/"
         const URL = "https://robertocavalieri.pythonanywhere.com/"
-
+        function confirmarAgregar() {
+            var confirmacion = prompt('Por favor, ingresa la clave correspondiente para confirmar:');
+            if (confirmacion === "1234") {
+                agregarProducto();
+            } else {
+                alert('La clave  de confirmación es incorrecta. Por favor, ingresa  la clave correspondiente para confirmar.');
+            }
+        }
         const app = Vue.createApp({
             data() {
                 return {
@@ -51,7 +58,8 @@
                     mostrarDatosProducto: false,
                     descripcion: '',
                     cantidad: '',
-                    precio: ''
+                    precio: '',
+                    confirmacion: ''
                 }
             },
             methods: {
@@ -75,11 +83,10 @@
                         })
                 },
                 confirmarGuardarCambios() {
-                    var confirmacion = prompt('Por favor, ingresa la clave correspondiente para confirmar:');
-                    if (confirmacion === '1234') {
+                    if (this.cantidad >= 0 && this.precio >= 0) {
                         this.guardarCambios();
                     } else {
-                        alert('La clave de confirmación es incorrecta. Por favor, ingresa la clave correspondiente para confirmar.');
+                        alert('Los valores de cantidad y precio deben ser positivos.');
                     }
                 },
                 guardarCambios() {

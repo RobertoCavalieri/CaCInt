@@ -20,10 +20,10 @@
         <input type="text" id="descripcion" name="descripcion" required><br>
 
         <label for="cantidad">Cantidad:</label>
-        <input type="number" id="cantidad" name="cantidad" required><br>
+        <input type="number" id="cantidad" name="cantidad" min="0" step="1" pattern="[0-9]+" required><br>
 
         <label for="precio">Precio:</label>
-        <input type="number" step="0.01" id="precio" name="precio" required><br>
+        <input type="number" step="0.01" id="precio" name="precio" min="0" required><br>
 
         <button type="button" onclick="confirmarAgregar()">Agregar Producto</button>
         <a href="index.html">Menu principal</a>
@@ -36,7 +36,7 @@
             if (confirmacion === "1234") {
                 agregarProducto();
             } else {
-                alert('La clave  de confirmación es incorrecta. Por favor, ingresa  la clave correspondiente para confirmar.');
+                alert('La clave de confirmación es incorrecta. Por favor, ingresa la clave correspondiente para confirmar.');
             }
         }
 
@@ -46,6 +46,18 @@
             var descripcion = document.getElementById('descripcion').value;
             var cantidad = document.getElementById('cantidad').value;
             var precio = document.getElementById('precio').value;
+
+            // Verificamos que los valores sean numéricos y positivos
+            if (isNaN(cantidad) || isNaN(precio) || cantidad < 0 || precio < 0) {
+                alert('Los valores de cantidad y precio deben ser numéricos y positivos.');
+                return;
+            }
+
+            // Verificamos que la cantidad sea un número entero
+            if (!Number.isInteger(Number(cantidad))) {
+                alert('La cantidad debe ser un número entero.');
+                return;
+            }
 
             // Creamos un objeto con los datos del producto
             var producto = {
